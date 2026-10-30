@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 通信を一切許可しない。メモの内容がネットワークへ出ていかないことをブラウザに強制させる -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; form-action 'none'; base-uri 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow">
+  <title>localmemo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="bar">
+    <h1>localmemo</h1>
+    <p class="hint">書き捨てのメモ。保存も送信もしません。タブを閉じると消えます。</p>
+  </header>
+
+  <main>
+    <textarea id="memo" placeholder="ここにメモを書く…"
+              autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+              data-gramm="false" data-1p-ignore data-lpignore="true" autofocus></textarea>
+
+    <div class="toolbar">
+      <span id="stats" class="stats">0 文字</span>
+      <span class="spacer"></span>
+      <button id="btn-qr" type="button" class="primary">QRコードでスマホへ</button>
+      <button id="btn-copy" type="button">コピー</button>
+      <button id="btn-clear" type="button" class="danger">消去</button>
+    </div>
+  </main>
+
+  <dialog id="qr-dialog">
+    <div class="dialog-head">
+      <h2>スマホで読み取る</h2>
+      <button id="btn-close" type="button" aria-label="閉じる">×</button>
+    </div>
+
+    <fieldset class="modes">
+      <label><input type="radio" name="mode" value="link" checked> リンク（スマホでこのアプリが開く）</label>
+      <label><input type="radio" name="mode" value="text"> テキストそのまま（カメラアプリで内容が見える）</label>
+    </fieldset>
+
+    <div id="qr-box" class="qr-box" aria-live="polite"></div>
+    <p id="qr-info" class="qr-info"></p>
+
+    <details id="link-details">
+      <summary>リンクを直接コピーする</summary>
+      <div class="link-row">
+        <input id="link-url" type="text" readonly spellcheck="false">
+        <button id="btn-copy-link" type="button">コピー</button>
+      </div>
+      <p class="hint">内容は URL の「#」以降に入っています。この部分はブラウザがサーバーへ送信しない領域です。</p>
+    </details>
+  </dialog>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <script src="vendor/qrcode.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
